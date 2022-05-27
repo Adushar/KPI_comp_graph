@@ -19,4 +19,12 @@ class Scene
 
     end
   end
+
+  def intersect_point(rayVector, rayPoint, planeNormal, planePoint)
+    diff = rayPoint - planePoint
+    prod1 = diff.dot planeNormal
+    prod2 = rayVector.dot planeNormal
+    prod3 = prod1 / prod2
+    rayPoint - rayVector * prod3
+  end
 end

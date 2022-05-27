@@ -6,11 +6,23 @@ class Vector
     @z = z
   end
 
+  def +(vec)
+    Vector.new(x+vec.x, y+vec.y, z+vec.z)
+  end
+
+  def -(vec)
+    Vector.new(x-vec.x, y-vec.y, z-vec.z)
+  end
+
   def cross(vec)
     Vector.new(
       (y*vec.z) - (z*vec.y),
       (z*vec.x) - (x*vec.z),
       (x*vec.y) - (y*vec.x)
     )
+  end
+
+  def dot(vec)
+    x * vec.x + y * vec.y + z * vec.z
   end
 end
