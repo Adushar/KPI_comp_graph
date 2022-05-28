@@ -2,12 +2,29 @@ import numpy as np
 
 SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 300
+light_point = np.array([7,3,10])
+camera = np.array([7,0,0])
+objects = [
+    np.array([1,0,0]),
+    np.array([0,1,0]),
+    np.array([1,0,1])
+]
 
 def renderScene:
     pixels = np.cartesian(range(SCREEN_WIDTH), range(SCREEN_HEIGHT))
+    pixels_results = []
     for pixel_x, pixel_y in pixels:
+        pixels_results.append(calculatePixel())
+
+def calculatePixel(x, y):
+    primary_ray = np.array([camera[0]-6, camera[1], camera[2])
+    intersections = []
+    for object in objects:
+        intersec = rayTriangleIntersection(camera, primary_ray, objects[0], objects[1], objects[2])
+        intersections.append(intersec)
 
 
+# Response [flag, u, v, t]
 # flag,
 # u, v - barycentric coordinates
 # t - distance from the ray origin
