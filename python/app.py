@@ -1,28 +1,36 @@
 import numpy as np
+from PIL import Image
+import pdb
 
 SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 300
 light_point = np.array([7,3,10])
 camera = np.array([7,0,0])
 objects = [
-    np.array([1,0,0]),
-    np.array([0,1,0]),
-    np.array([1,0,1])
+    np.array([0.5,0,0]),
+    np.array([0,0.5,0]),
+    np.array([0,0,0.5])
 ]
 
-def renderScene:
-    pixels = np.cartesian(range(SCREEN_WIDTH), range(SCREEN_HEIGHT))
-    pixels_results = []
-    for pixel_x, pixel_y in pixels:
-        pixels_results.append(calculatePixel())
+def renderScene():
+    data = np.zeros( (SCREEN_WIDTH,SCREEN_HEIGHT,3), dtype=np.uint8 )
+    for pixel_x in range(SCREEN_WIDTH):
+        for pixel_y in range(SCREEN_HEIGHT):
+            data[pixel_x, pixel_y] = calculatePixel(pixel_x, pixel_y)
+    image = Image.fromarray(data)
+    image.show()
 
 def calculatePixel(x, y):
-    primary_ray = np.array([camera[0]-6, camera[1], camera[2])
-    intersections = []
+    primary_ray = np.array([camera[0]-1, camera[1], camera[2]])
+    closest_intersection = None
     for object in objects:
         intersec = rayTriangleIntersection(camera, primary_ray, objects[0], objects[1], objects[2])
-        intersections.append(intersec)
+        if (not closest_intersection or closest_intersection[3] < intersec[3]): closest_intersection = intersec
+    color = [255, 0, 0] if closest_intersection else [255, 255, 255]
+    return color
 
+def parseObjects(filename):
+    # ...
 
 # Response [flag, u, v, t]
 # flag,
@@ -54,10 +62,11 @@ def rayTriangleIntersection(o, d, p0, p1, p2):
     flag = True
     return [flag, u, v, t]
 
-v0 = np.array([-2,-3,0])
-v1 = np.array([1,2,0])
-v2 = np.array([-7,7,0])
-origin = np.array([-2, 2, 1])
-direction = -np.array([-4, 2, 2])
-
-print(rayTriangleIntersection(origin, direction, v0, v1, v2))
+# v0 = np.array([-2,-3,0])
+# v1 = np.array([1,2,0])
+# v2 = np.array([-7,7,0])
+# origin = np.array([-2, 2, 1])
+# direction = -np.array([-4, 2, 2])
+#
+# print(rayTriangleIntersection(origin, direction, v0, v1, v2))
+renderScene()
